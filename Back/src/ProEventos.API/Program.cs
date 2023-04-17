@@ -13,10 +13,12 @@ namespace ProEventos.API
     {
         public static void Main(string[] args)
         {
+            // Cria um host bilda e executa ele 
             CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
+        // Define a classe "startup" como a startup a ser usada pelo web host e é responsavel por gerir os diferentes niveis da aplicação (Controllers, Data e models)
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

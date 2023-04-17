@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace ProEventos.API.models
 {
+
+    // classe modelo do projeto
+
     public class Evento
     {
         public int EventoId { get; set; }
