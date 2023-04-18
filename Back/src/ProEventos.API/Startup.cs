@@ -35,10 +35,13 @@ namespace ProEventos.API
 
             services.AddDbContext<DataContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
-            ); 
+            );
 
             // Adiciona o serviço dos controllers, que definem como funcionam as requests da API REST
             services.AddControllers();
+
+            // Adiciona o Cors ...
+            services.AddCors();
 
             // Adiciona o serviço de Swagger que gera uma interface para teste e visualização de APIs e documentar todos os endpoints e parâmetros, além de fornecer exemplos de solicitações e respostas.
             services.AddSwaggerGen(c =>
@@ -62,6 +65,10 @@ namespace ProEventos.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(cors => cors.AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowAnyOrigin());
 
             app.UseEndpoints(endpoints =>
             {

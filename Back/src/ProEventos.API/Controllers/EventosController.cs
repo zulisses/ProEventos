@@ -6,20 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProEventos.API.Data;
 using ProEventos.API.models;
-
 namespace ProEventos.API.Controllers
 {
-
     // Define o que as Requests fazem 
 
     [ApiController]
     [Route("api/[controller]")]
-    public class EventoController : ControllerBase
+    public class EventosController : ControllerBase
     {
 
         private readonly DataContext _context;
 
-        public EventoController(DataContext context)
+        public EventosController(DataContext context)
         {
             this._context = context;
         }
