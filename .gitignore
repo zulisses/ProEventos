@@ -504,3 +504,8 @@ Thumbs.db
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+
+#Excluindo DB
+*.db
+*.db-shm
+*.db-wal
