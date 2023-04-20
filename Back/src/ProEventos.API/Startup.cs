@@ -12,7 +12,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using ProEventos.API.Data;
+using ProEventos.Application;
+using ProEventos.Application.Contratos;
+using ProEventos.Persistence;
+using ProEventos.Persistence.Contextos;
+using ProEventos.Persistence.Contratos;
 
 namespace ProEventos.API
 {
@@ -33,12 +37,19 @@ namespace ProEventos.API
             // Adiciona o serviço de banco de dados por meio da classe DataContext, que utiliza o 
             // banco de dados expecificado pela connectionString.Defalt definido nos arquivos appsettings
 
-            services.AddDbContext<DataContext>(
+            services.AddDbContext<ProEventosContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
 
             // Adiciona o serviço dos controllers, que definem como funcionam as requests da API REST
-            services.AddControllers();
+            services.AddControllers()
+                    .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling =
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    );
+
+            services.AddScoped<IEventoService, EventoService>();
+            services.AddScoped<IGeralPersist, GeralPersist>();
+            services.AddScoped<IEventoPersist, EventoPersist>();
 
             // Adiciona o Cors ...
             services.AddCors();
