@@ -26,7 +26,6 @@ namespace ProEventos.Persistence
             if(includePalestrante)
                 query.Include(e => e.PalestranteEventos)
                     .ThenInclude(pe => pe.Palestrante);
-                    
 
             query = query.OrderBy(e => e.Id).AsNoTracking()
                         .Where(e => e.Tema.ToLower().Contains(tema.ToLower()));
