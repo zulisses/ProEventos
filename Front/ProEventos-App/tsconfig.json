@@ -19,12 +19,16 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@environments/*": ["src/environments/*"]
+    }
   },
-  "angularCompilerOptions": {
+  "angularCompilerOptions": { // configurações para o compilador sobre angular (typescript)
     "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
+    "strictInjectionParameters": true, // informa erros ao esquecer injeções de dependencia
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true // chacagem profunda de tipagem
   }
 }
