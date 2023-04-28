@@ -1,18 +1,26 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProEventos.Domain
 {
 
     // classe modelo do projeto
 
+    // [Table("EventosDetalhes")]
     public class Evento
     {
+        // [Key]
         public int Id { get; set; }
         public string Local { get; set; }
         public DateTime? DataEvento { get; set; }
+
+        // [NotMapped]                            não será mappeado no banco de dados, pois só faz parte da logica do programa
+        // public int ContagemDias { get; set; }
+
+        [Required,
+        MaxLength(50)]
         public string Tema { get; set; }    
         public int QtdPessoas { get; set; }
         public string ImagemURL { get; set; }

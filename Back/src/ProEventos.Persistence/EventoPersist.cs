@@ -56,8 +56,6 @@ namespace ProEventos.Persistence
             .Include(e => e.Lotes)
             .Include(e => e.RedesSociais);
 
-            query.AsNoTracking();
-
             if(includePalestrante)
                 query.Include(e => e.PalestranteEventos)
                     .ThenInclude(pe => pe.Palestrante);
