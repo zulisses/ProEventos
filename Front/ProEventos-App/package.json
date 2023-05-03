@@ -24,6 +24,7 @@
     "fontawesome-free": "^1.0.4",
     "moment": "^2.29.4",
     "ngx-bootstrap": "^7.1.2",
+    "ngx-currency": "^3.0.0",
     "ngx-spinner": "^12.0.0",
     "ngx-toastr": "^14.3.0",
     "rxjs": "~6.6.0",

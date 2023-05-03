@@ -72,7 +72,7 @@ namespace ProEventos.API.Controllers
         {
            try
             {
-                var evento = await _eventoService.AddEventos(model);
+                var evento = await _eventoService.AddEvento(model);
                 if(evento == null) return NoContent();
 
                 return Ok(evento);

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using ProEventos.Application.Contratos;
@@ -21,7 +20,7 @@ namespace ProEventos.Application
             _geralPersist = geralPersist;
             _mapper = mapper;
         }
-        public async Task<EventoDto> AddEventos(EventoDto model)
+        public async Task<EventoDto> AddEvento(EventoDto model)
         {
             try
             {
@@ -46,14 +45,14 @@ namespace ProEventos.Application
         {
             try
             {
-                var evento = await _eventoPersist.GetEventoByIdAsync(eventoId, false);
-                if(evento == null) return null;
+                var eventos = await _eventoPersist.GetEventoByIdAsync(eventoId, false);
+                if(eventos == null) return null;
 
-                model.Id = evento.Id;
+                model.Id = eventos.Id;
 
-                _mapper.Map(model, evento);
+                _mapper.Map(model, eventos);
 
-                _geralPersist.Update<Evento>(evento);
+                _geralPersist.Update<Evento>(eventos);
 
                 if(await _geralPersist.SaveChangesAsync())
                 {

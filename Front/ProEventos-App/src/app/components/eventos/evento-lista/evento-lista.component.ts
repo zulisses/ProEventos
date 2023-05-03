@@ -58,12 +58,10 @@ export class EventoListaComponent implements OnInit {
         this.eventosFiltrados = eventos;
       },
       error: (error: any) => {
-        this.spinner.hide();
         this.toastr.error("Erro ao Carregar os Eventos.", "Error!");
-      },
-      complete: () => this.spinner.hide()
+      }
     };
-    this.eventoService.getEventos().subscribe(observer);
+    this.eventoService.getEventos().subscribe(observer).add(() => this.spinner.hide());
   }
 
 
