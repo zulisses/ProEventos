@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '@environments/environment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -48,6 +49,12 @@ export class EventoListaComponent implements OnInit {
   {
     this.spinner.show();
     this.carregarEventos();
+  }
+
+  public mostraImagem(imagemURL: string): string {
+    return (imagemURL !== "") ?
+        `${environment.apiURL}resources/imagens/${imagemURL}` :
+        "assets/img/semImagem.jpeg";
   }
 
   public carregarEventos(): void
