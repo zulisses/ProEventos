@@ -9,10 +9,10 @@ using ProEventos.Persistence.Contratos;
 
 namespace ProEventos.Persistence
 {
-    public class PalestrantePersist : IPalestrantePersist
+    public class PalestrantePersist : GeralPersist, IPalestrantePersist
     {
         private readonly ProEventosContext _context;
-        public PalestrantePersist(ProEventosContext context)
+        public PalestrantePersist(ProEventosContext context) : base(context)
         {
             this._context = context;
         }
@@ -28,7 +28,7 @@ namespace ProEventos.Persistence
                     
 
             query = query.OrderBy(p => p.Id).AsNoTracking()
-                        .Where(p => p.Nome.ToLower().Contains(nome.ToLower()));
+                        .Where(p => p.User.NomeCompleto.ToLower().Contains(nome.ToLower()));
 
             return await query.ToArrayAsync();
         }

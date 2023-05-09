@@ -6,7 +6,7 @@ using ProEventos.Domain;
 
 namespace ProEventos.Persistence.Contratos
 {
-    public interface ILotePersist
+    public interface ILotePersist : IGeralPersist
     {
         /// <summary>
         /// Método get que retornará uma lista de lotes por eventoId.
