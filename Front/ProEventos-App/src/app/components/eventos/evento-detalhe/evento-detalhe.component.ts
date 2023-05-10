@@ -18,7 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EventoDetalheComponent implements OnInit {
   modalRef!: BsModalRef;
-  evento!: Evento;
+  evento = {} as Evento;
   form!: FormGroup;
   estadoSalvar = "post";
   loteAtual = {id: 0, nome: "", indice: 0};

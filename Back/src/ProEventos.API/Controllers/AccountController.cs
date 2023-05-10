@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProEventos.Application.Contratos;
 using Microsoft.AspNetCore.Http;
 using ProEventos.Application.Dtos;
-using System.Security.Claims;
 using ProEventos.API.Extensions;
 
 namespace ProEventos.API.Controllers
@@ -26,7 +23,6 @@ namespace ProEventos.API.Controllers
         }
 
         [HttpGet("GetUser")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetUser()
         {
             try
@@ -54,7 +50,11 @@ namespace ProEventos.API.Controllers
 
                 var user = await _userService.CreateAccountAsync(userDto);
                 if(user != null)
-                    return Ok(user);
+                    return Ok(new {
+                    userName = user.UserName,
+                    PrimeiroNome = user.PrimeiroNome,
+                    token = _tokenService.CreateToken(user).Result
+                });
 
                 return BadRequest("Usuário não criado, tente novamente mais tarde!.");
             }
@@ -85,24 +85,31 @@ namespace ProEventos.API.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar realizar login Usuário. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar realizar login. Erro: {ex.Message}");
             }
         }
 
 
         [HttpPut("UpdateUser")]
-        [AllowAnonymous]
         public async Task<IActionResult> UpdateUser(UserUpdateDto userUpdateDto)
         {
             try
             {
+                if(userUpdateDto.UserName != User.GetUserName())
+                    return Unauthorized("Usuário Inválido.");
+
                 var user = await _userService.GetUserByUserNameAsync(User.GetUserName());
                 if(user == null) return Unauthorized("Usuário Invalido.");
 
                 var userReturn = await _userService.UpdateAccount(userUpdateDto);
                 if(userReturn == null) return NoContent();
 
-                return Ok(userReturn);
+                return Ok(new 
+                {
+                    userName = userReturn.UserName,
+                    PrimeiroNome = userReturn.PrimeiroNome,
+                    token = _tokenService.CreateToken(userReturn).Result
+                });
             }
             catch (Exception ex)
             {

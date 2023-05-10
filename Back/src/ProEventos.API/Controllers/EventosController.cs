@@ -171,7 +171,7 @@ namespace ProEventos.API.Controllers
             string imageName = new string(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(" ", "-");
             imageName = $"{imageName}{DateTime.UtcNow.ToString("yymmssfff")}{Path.GetExtension(imageFile.FileName)}";
 
-            var imagePath = Path.Combine(_env.ContentRootPath, @"Resources/imagens", imageName);
+            var imagePath = Path.Combine(_env.ContentRootPath, @"Resources/imagens/", imageName);
 
             using (var fileStream = new FileStream(imagePath, FileMode.Create))
             {
