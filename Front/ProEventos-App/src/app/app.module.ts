@@ -10,7 +10,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgxCurrencyModule } from 'ngx-currency';
-
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrModule } from 'ngx-toastr';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -79,7 +79,8 @@ defineLocale('pt-br', ptBrLocale);
       progressAnimation: 'decreasing'
     }),
     NgxSpinnerModule,
-    NgxCurrencyModule
+    NgxCurrencyModule,
+    PaginationModule.forRoot()
   ],
   providers: [
     EventoService,
