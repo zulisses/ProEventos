@@ -6,6 +6,7 @@ using ProEventos.Application.Contratos;
 using Microsoft.AspNetCore.Http;
 using ProEventos.Application.Dtos;
 using ProEventos.API.Extensions;
+using ProEventos.API.Helpers;
 
 namespace ProEventos.API.Controllers
 {
@@ -16,8 +17,11 @@ namespace ProEventos.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
-        public AccountController(IUserService userService, ITokenService tokenService)
+        private readonly IUtil _util;
+        private readonly string _destino = "Perfil";
+        public AccountController(IUserService userService, ITokenService tokenService, IUtil util)
         {
+            _util = util;
             _tokenService = tokenService;
             _userService = userService;
         }
@@ -114,6 +118,32 @@ namespace ProEventos.API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar atualizar Usuário. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpPost("upload-image")]
+        public async Task<IActionResult> Post()
+        {
+           try
+            {
+                var user = await _userService.GetUserByUserNameAsync(User.GetUserName());
+                if(user == null) return NoContent();
+
+                var file = Request.Form.Files[0];
+
+                if(file.Length > 0)
+                {
+                    _util.DeleteImage(user.ImagemURL, _destino);
+                    user.ImagemURL = await _util.SaveImage(file, _destino);
+                }
+
+                var userRetorno = await _userService.UpdateAccount(user);
+
+                return Ok(userRetorno);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar realizar upload de foto do usuário. Erro: {ex.Message}");
             }
         }
     }
