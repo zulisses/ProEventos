@@ -34,11 +34,16 @@ import { RegistrationComponent } from './components/user/registration/registrati
 import { EventoService } from './services/evento.service';
 import { LoteService } from './services/lote.service';
 
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { AccountService } from './services/account.service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { HomeComponent } from './components/home/home.component';
+import { PerfilDetalheComponent } from './components/user/perfil/perfil-detalhe/perfil-detalhe.component';
+import { PalestranteListaComponent } from './components/palestrantes/palestrante-lista/palestrante-lista.component';
+import { PalestranteDetalheComponent } from './components/palestrantes/palestrante-detalhe/palestrante-detalhe.component';
+import { RedesSociaisComponent } from './components/redesSociais/redesSociais.component';
 defineLocale('pt-br', ptBrLocale);
 
 @NgModule({
@@ -46,9 +51,13 @@ defineLocale('pt-br', ptBrLocale);
     AppComponent,
     EventosComponent,
     PalestrantesComponent,
+    PalestranteListaComponent,
+    PalestranteDetalheComponent,
     ContatosComponent,
     DashboardComponent,
     PerfilComponent,
+    PerfilDetalheComponent,
+    RedesSociaisComponent,
     TituloComponent,
     NavComponent,
     DateTimeFormatPipe,
@@ -71,6 +80,7 @@ defineLocale('pt-br', ptBrLocale);
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
+    TabsModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-bottom-right',

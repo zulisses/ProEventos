@@ -65,5 +65,13 @@ export class AccountService {
     localStorage.setItem("user", JSON.stringify(user));
   }
 
+  public postUpload(file: File): Observable<UserUpdate> {
+    const fileToUpload = file as File;
+    const formData = new FormData();
+    formData.append("file", fileToUpload);
 
+    return this.http
+          .post<UserUpdate>(`${this.baseURL}upload-image`, formData)
+          .pipe(take(1));
+  }
 }

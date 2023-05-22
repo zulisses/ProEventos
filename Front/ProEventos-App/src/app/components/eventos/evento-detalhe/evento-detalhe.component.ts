@@ -242,7 +242,7 @@ export class EventoDetalheComponent implements OnInit {
     this.uploadImagem();
   }
 
-  public uploadImagem(): void {
+  private uploadImagem(): void {
     this.spinner.show();
 
     this.eventoService.postUpload(this.evento.id, this.file[0]).subscribe(

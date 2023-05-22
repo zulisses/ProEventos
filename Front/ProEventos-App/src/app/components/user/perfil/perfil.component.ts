@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControlOptions, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ValidatorField } from '@app/helpers/validatorField';
 import { UserUpdate } from '@app/models/identity/UserUpdate';
 import { AccountService } from '@app/services/account.service';
+import { environment } from '@environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
@@ -13,74 +11,55 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./perfil.component.scss']
 })
 export class PerfilComponent implements OnInit {
+  public usuario = {} as UserUpdate;
+  public file!: File[];
+  public imagemURL = "";
 
-  userUpdate = {} as UserUpdate;
-  form!: FormGroup;
-
-  constructor(private fb: FormBuilder, public accountService: AccountService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
-
-  get f(): any {return  this.form.controls; }
-
-  onSubmit(): void {
-    this.atualizarUsuario();
+  public get ehPalestrante(): boolean {
+    return this.usuario.funcao === "Palestrante";
   }
 
-  public atualizarUsuario(): void {
-    this.userUpdate = { ...this.form.value };
-    this.spinner.show();
-
-    this.accountService.updateUser(this.userUpdate).subscribe(
-      () => this.toastr.success("Usuário atualizado.", "Sucesso!"),
-      (error) => {
-        this.toastr.error(error.error);
-        console.error(error);
-      }
-    ).add(() => this.spinner.hide());
-  }
+  constructor(
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService,
+    private accountService: AccountService
+  ) { }
 
   ngOnInit() {
-    this.validation();
-    this.carregarUsuario();
   }
 
-  private carregarUsuario(): void {
+  public setFormValue(usuario: UserUpdate): void {
+    this.usuario = usuario;
+    if(this.usuario.imagemURL)
+      this.imagemURL = environment.apiURL +  `Resources/perfil/${this.usuario.imagemURL}`;
+    else
+      this.imagemURL = "./assets/img/perfil.jpg";
+
+  }
+
+  public onFileChange(ev: any): void {
+    const reader = new FileReader();
+
+    reader.onload = (event: any) => this.imagemURL = event.target.result;
+
+    this.file = ev.target.files;
+    reader.readAsDataURL(this.file[0]);
+
+    this.uploadImagem();
+  }
+
+  private uploadImagem(): void {
     this.spinner.show();
-    this.accountService.getUser().subscribe(
-      (userRetorno: UserUpdate) => {
-        console.log(userRetorno);
-        this.userUpdate = userRetorno;
-        this.form.patchValue(this.userUpdate);
-        this.toastr.success("Usuário Carregado.", "Sucesso!");
+
+    this.accountService.postUpload(this.file[0]).subscribe(
+      () => {
+        this.toastr.success("Imagem atualizada com sucesso.", "Sucesso!");
       },
-      (error) => {
-        console.error(error);
-        this.toastr.error("Usuário não carregado.", "Erro!");
-        this.router.navigate(["/dashboard"]);
+      (error: any) => {
+        this.toastr.error("Erro ao fazer upload de imagem.", "Erro!");
+        console.error(error)
       }
     ).add(() => this.spinner.hide());
   }
 
-  private validation(): void {
-    const formOptions: AbstractControlOptions = {
-      validators: ValidatorField.MustMatch("password", "confirmarPassword")
-    }
-
-    this.form = this.fb.group({
-      userName: [""],
-      titulo: ["NaoInformado", Validators.required],
-      primeiroNome: ["", Validators.required],
-      ultimoNome: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
-      phoneNumber: ["", Validators.required],
-      funcao: ["NaoInformado", Validators.required],
-      descricao: ["", Validators.required],
-      password: ["", [Validators.minLength(4), Validators.nullValidator]],
-      confirmarPassword: ["", Validators.nullValidator]
-    }, formOptions);
-  }
-
-  public resetForm(event: any): void {
-    event.preventDefault();
-    this.form.reset();
-  }
 }
